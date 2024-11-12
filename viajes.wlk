@@ -1,6 +1,7 @@
 class Actividad{
   const property idioma = []
   method esInteresante() = idioma.size() > 2
+  method esRecomendado(unSocio) = self.esInteresante() and ! unSocio.leAtrae(self) and unSocio.actividadesRealizadas().contains(self)
 
 }
 class ViajesDePlaya inherits Actividad{
@@ -48,13 +49,39 @@ class ClasesDeGimnacia inherits Actividad{
  method sirveParaBronsearese() = false
 }
 
-class Socios inherits Actividad{
-  var actividadesRealizadas = []
+class Socios{
+  var property actividadesRealizadas = []
   var maximodeActividades
-
+  var edad 
+  const property idioma =#{}
+  
+  method esRecomendado(unaActividad){ unaActividad.esInteresante() and 
+  actividadesRealizadas.}
+  method leAtrae(unaActividad)
   method esAdoradorDelSol() = actividadesRealizadas.all({a=>a.sirveParaBronsearese()})
   method actividadEsforzadas()= actividadesRealizadas.filter({a=>a.implicaEsfuerso()})
   method registrarActividad(unaActividad) {if(actividadesRealizadas.size() == maximodeActividades) self.error("llego al maximo")
   actividadesRealizadas.add(unaActividad)
   }
+ 
+  }
+  class SocioTranquilo inherits Socios{
+    override method leAtrae(unaActividad) = unaActividad.diasDeActividad() >= 4
+  
+  }   
+  class SocioCoherente inherits Socios{
+    override method leAtrae(unaActividad){
+      if(self.esAdoradorDelSol()) {
+        unaActividad.sirveParaBronsearese()
+      }else{
+        unaActividad.implicaEsfuerso()
+      }
+    } 
+    }
+
+    class SocioRelajado inherits Socios{
+      override method leAtrae(unaActividad){
+        return !idioma.interseccion(unaActividad.idiomas()).isEmpty()
+      }
+    
   }
